@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { usePublishStore } from '@/stores/publish'
+import { load as yamlLoad, dump as yamlDump } from 'js-yaml'
 
 const publishStore = usePublishStore()
 const commitMessage = ref('')
@@ -48,6 +49,11 @@ const submitPullRequest = async () => {
 
   loading.value = false
 }
+onMounted(() => {
+  const curator = yamlLoad(yamlFileContent.value, 'utf-8').curation.process[0]
+  console.log(curator)
+  localStorage.setItem('curator', JSON.stringify({ name: curator.name, orcid: curator.orcid }))
+})
 </script>
 
 <template>
