@@ -1,0 +1,984 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/svgdigitizer.json#",
+  "allOf": [
+    {
+      "$ref": "#/definitions/Svgdigitizer"
+    }
+  ],
+  "definitions": {
+    "Svgdigitizer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "curation": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/curation.json#",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Svgdigitizer/properties/curation/definitions/Curation"
+            }
+          ],
+          "definitions": {
+            "Curation": {
+              "type": "object",
+              "additionalProperties": false,
+              "title": "curation",
+              "description": "Details on the curation process of the data.",
+              "required": [
+                "process"
+              ],
+              "properties": {
+                "process": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "$ref": "#/definitions/Svgdigitizer/properties/curation/definitions/Process"
+                  }
+                }
+              }
+            },
+            "Process": {
+              "type": "object",
+              "required": [
+                "role",
+                "name",
+                "orcid"
+              ],
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "oneOf": [
+                    {
+                      "const": "experimentalist",
+                      "description": "A person that recorded the (meta)data."
+                    },
+                    {
+                      "const": "curator",
+                      "description": "A person that created a (meta)dataset from literature data."
+                    },
+                    {
+                      "const": "reviewer",
+                      "description": "A person that verified the (meta)data (usually literature data)."
+                    },
+                    {
+                      "const": "supervisor",
+                      "description": "A person that supervised the experimentalist."
+                    }
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                },
+                "orcid": {
+                  "description": "An URL containing the ORCID.",
+                  "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          }
+        },
+        "eln": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/eln.json#",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Svgdigitizer/properties/eln/definitions/Eln"
+            }
+          ],
+          "definitions": {
+            "Eln": {
+              "type": "object",
+              "additionalProperties": false,
+              "title": "eln",
+              "properties": {
+                "url": {
+                  "description": "A link to an electronic lab notebook (ELN).",
+                  "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url"
+                }
+              },
+              "required": [
+                "url"
+              ]
+            }
+          }
+        },
+        "experimental": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/experimental.json#",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Svgdigitizer/properties/experimental/definitions/Experimental"
+            }
+          ],
+          "definitions": {
+            "Experimental": {
+              "type": "object",
+              "additionalProperties": true,
+              "title": "experimental",
+              "description": "Details about the configuration of the experimental set up.",
+              "properties": {
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "url": {
+                  "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url",
+                  "description": "A URL to, i.e., a published work (DOI) or an ELN entry."
+                },
+                "instrumentation": {
+                  "type": "array",
+                  "items": {
+                    "$schema": "http://json-schema.org/draft-06/schema#",
+                    "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/experimental/instrumentation.json#",
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/Svgdigitizer/properties/experimental/definitions/Experimental/properties/instrumentation/items/definitions/Instrumentation"
+                      }
+                    ],
+                    "definitions": {
+                      "Instrumentation": {
+                        "description": "The instruments used to perform the experiment.",
+                        "title": "instrumentation",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "manufacturer": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "supplier": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "figure description": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/figure_description.json#",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/FigureDescription"
+            }
+          ],
+          "definitions": {
+            "FigureDescription": {
+              "type": "object",
+              "additionalProperties": false,
+              "title": "figure description",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "oneOf": [
+                    {
+                      "const": "digitized",
+                      "description": "Data inferred from a software such as svgdigitizer"
+                    },
+                    {
+                      "const": "raw",
+                      "description": "Data is consistent with originally recorded data."
+                    },
+                    {
+                      "const": "simulated",
+                      "description": "Data created with a simulation software."
+                    }
+                  ]
+                },
+                "measurement type": {
+                  "type": "string"
+                },
+                "simultaneous measurements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/Field"
+                  }
+                },
+                "scan rate": {
+                  "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate"
+                }
+              },
+              "required": [
+                "type"
+              ]
+            },
+            "Field": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "orientation": {
+                  "enum": [
+                    "horizontal",
+                    "vertical"
+                  ]
+                },
+                "reference": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "unit"
+              ],
+              "title": "Field"
+            },
+            "ScanRate": {
+              "type": "object",
+              "additionalProperties": false,
+              "allOf": [
+                {
+                  "$schema": "http://json-schema.org/draft-06/schema#",
+                  "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/general/quantity.json",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0/definitions/Quantity"
+                    }
+                  ],
+                  "definitions": {
+                    "Quantity": {
+                      "type": "object",
+                      "title": "Quantity",
+                      "additionalProperties": false,
+                      "properties": {
+                        "value": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0/definitions/Value"
+                        },
+                        "unit": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0/definitions/Unit"
+                        }
+                      }
+                    },
+                    "Unit": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "title": "Unit"
+                    },
+                    "Value": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "title": "Value"
+                    }
+                  }
+                }
+              ],
+              "title": "ScanRate"
+            }
+          }
+        },
+        "project": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/projects.json",
+          "definitions": {
+            "Projects": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Svgdigitizer/properties/project/definitions/Project"
+              }
+            },
+            "Project": {
+              "title": "projects",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "url": {
+                  "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url"
+                },
+                "grant number": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
+          },
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Svgdigitizer/properties/project/definitions/Project"
+          }
+        },
+        "source": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/source.json#",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source"
+            }
+          ],
+          "definitions": {
+            "Source": {
+              "type": "object",
+              "title": "source",
+              "additionalProperties": false,
+              "required": [
+                "citation key",
+                "url"
+              ],
+              "properties": {
+                "citation key": {
+                  "type": "string"
+                },
+                "url": {
+                  "$schema": "http://json-schema.org/draft-06/schema#",
+                  "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/general/url.json",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url/definitions/Url"
+                    }
+                  ],
+                  "definitions": {
+                    "Url": {
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "qt-uri-protocols": [
+                          "https",
+                          "http"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "techniques": {
+                  "type": "array",
+                  "contains": {
+                    "type": "string"
+                  }
+                },
+                "figure": {
+                  "type": "string"
+                },
+                "bibdata": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "curve": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "system": {
+          "$schema": "http://json-schema.org/draft-06/schema#",
+          "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/system.json#",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System"
+            }
+          ],
+          "definitions": {
+            "System": {
+              "type": "object",
+              "additionalProperties": false,
+              "title": "system",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "oneOf": [
+                    {
+                      "const": "electrochemical",
+                      "description": "An electrochemical system"
+                    }
+                  ]
+                },
+                "electrolyte": {
+                  "$schema": "http://json-schema.org/draft-06/schema#",
+                  "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/system/electrolyte.json#",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/Electrolyte"
+                    }
+                  ],
+                  "definitions": {
+                    "Electrolyte": {
+                      "type": "object",
+                      "title": "Electrolyte",
+                      "additionalProperties": false,
+                      "required": [
+                        "type"
+                      ],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "oneOf": [
+                            {
+                              "const": "aqueous",
+                              "description": "The solvent is water."
+                            },
+                            {
+                              "const": "ionic liquid",
+                              "description": "The solvent is an ionic liquid."
+                            },
+                            {
+                              "const": "non-aqueous",
+                              "description": "The solvent is non-aqueous other than an ionic liquid, i.e., an organic compound."
+                            },
+                            {
+                              "const": "solid",
+                              "description": "A solid electrolyte."
+                            }
+                          ]
+                        },
+                        "electrolyte container": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/ElectrolyteContainer"
+                        },
+                        "components": {
+                          "type": "array",
+                          "items": {
+                            "$schema": "http://json-schema.org/draft-06/schema#",
+                            "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/general/component.json",
+                            "allOf": [
+                              {
+                                "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/Electrolyte/properties/components/items/definitions/Component"
+                              }
+                            ],
+                            "definitions": {
+                              "Component": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                  "name": {
+                                    "type": "string",
+                                    "description": "A unique identifier."
+                                  },
+                                  "concentration": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  },
+                                  "type": {
+                                    "anyOf": [
+                                      {
+                                        "const": "solvent",
+                                        "description": "The solvent."
+                                      },
+                                      {
+                                        "const": "salt",
+                                        "description": "A salt added the solvent"
+                                      },
+                                      {
+                                        "const": "acid",
+                                        "description": "An acid added to the solvent."
+                                      },
+                                      {
+                                        "const": "base",
+                                        "description": "A base added to the solvent."
+                                      },
+                                      {
+                                        "const": "gas",
+                                        "description": "A gas passed through the solvent."
+                                      },
+                                      {
+                                        "const": "solute",
+                                        "description": "A solute added to the solvent, which is not a salt, acid, base or a gas, i.e., water."
+                                      }
+                                    ]
+                                  },
+                                  "source": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/Electrolyte/properties/components/items/definitions/ComponentSource"
+                                  },
+                                  "purity": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/Electrode/properties/purity"
+                                  },
+                                  "partial pressure": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  },
+                                  "proportion": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  },
+                                  "flow": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  },
+                                  "comment": {
+                                    "type": "string"
+                                  },
+                                  "pressure": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  }
+                                },
+                                "required": [
+                                  "name",
+                                  "type"
+                                ],
+                                "title": "Component"
+                              },
+                              "ComponentSource": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                  "supplier": {
+                                    "type": "string"
+                                  },
+                                  "manufacturer": {
+                                    "type": "string"
+                                  },
+                                  "LOT": {
+                                    "type": "string"
+                                  },
+                                  "purity": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/Electrode/properties/purity"
+                                  },
+                                  "refinement": {
+                                    "type": "string"
+                                  },
+                                  "quality": {
+                                    "type": "string"
+                                  }
+                                },
+                                "title": "ComponentSource"
+                              }
+                            }
+                          }
+                        },
+                        "ph": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/Ph"
+                        },
+                        "temperature": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                        },
+                        "comment": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "ElectrolyteContainer": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "description": "The vessel in which the supplying electrolyte as prepared or stored before the measurement."
+                        },
+                        "components": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/ElectrolyteContainerComponent"
+                          }
+                        }
+                      },
+                      "title": "ElectrolyteContainer"
+                    },
+                    "Ph": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "value": {
+                          "type": "number"
+                        },
+                        "uncertainty": {
+                          "type": "number"
+                        },
+                        "comment": {
+                          "type": "string"
+                        },
+                        "calculation": {
+                          "type": "string"
+                        }
+                      },
+                      "title": "Ph"
+                    },
+                    "ElectrolyteContainerComponent": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "A unique identifier."
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "The type of the container, i.e., a flask."
+                        },
+                        "comment": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "electrodes": {
+                  "type": "array",
+                  "items": {
+                    "$schema": "http://json-schema.org/draft-06/schema#",
+                    "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/system/electrode.json#",
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/Electrode"
+                      }
+                    ],
+                    "definitions": {
+                      "Electrode": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "title": "Electrode",
+                        "required": [
+                          "name",
+                          "function"
+                        ],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "A unique identifier."
+                          },
+                          "function": {
+                            "type": "string",
+                            "oneOf": [
+                              {
+                                "const": "working electrode",
+                                "description": "A working electrode."
+                              },
+                              {
+                                "const": "counter electrode",
+                                "description": "A counter electrode."
+                              },
+                              {
+                                "const": "reference electrode",
+                                "description": "A reference electrode."
+                              }
+                            ]
+                          },
+                          "redox system": {
+                            "type": "string",
+                            "description": "A particular name for a reference electrode such as RHE, MSE, AgCl2, etc."
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "A description of the electrode, for example when it is home made."
+                          },
+                          "geometric electrolyte contact area": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                          },
+                          "purity": {
+                            "$schema": "http://json-schema.org/draft-06/schema#",
+                            "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/general/purity.json",
+                            "allOf": [
+                              {
+                                "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/Electrode/properties/purity/definitions/Purity"
+                              }
+                            ],
+                            "definitions": {
+                              "Purity": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                  "grade": {
+                                    "type": "string"
+                                  },
+                                  "total organic carbon": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  },
+                                  "total ion conductivity": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                                  },
+                                  "value": {
+                                    "type": "number"
+                                  },
+                                  "unit": {
+                                    "type": "string"
+                                  },
+                                  "container": {
+                                    "type": "string",
+                                    "description": "An unambiguous name for the container."
+                                  },
+                                  "internal LOT": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url",
+                                    "description": "A url with further details on the electrolyte container."
+                                  },
+                                  "refinement": {
+                                    "type": "string"
+                                  }
+                                },
+                                "title": "Purity"
+                              }
+                            }
+                          },
+                          "preparation procedure": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/ElectrodePreparation"
+                          },
+                          "shape": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/Shape"
+                          },
+                          "source": {
+                            "type": "object",
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/ElectrodeSource"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "material": {
+                            "type": "string",
+                            "description": "Abbreviation of a metal compound, i.e., Pt for Platinum."
+                          },
+                          "crystallographic orientation": {
+                            "type": "string",
+                            "description": "Miller indices of the surface orientation ((111), (0001), (11,15,1)) or 'poly' for polycrystalline samples."
+                          }
+                        }
+                      },
+                      "ElectrodeSource": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "manufacturer": {
+                            "type": "string"
+                          },
+                          "LOT": {
+                            "type": "string"
+                          },
+                          "purity": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrodes/items/definitions/Electrode/properties/purity"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url",
+                            "description": "A url to a pdf or description of the electrode."
+                          },
+                          "supplier": {
+                            "type": "string"
+                          }
+                        },
+                        "title": "ElectrodeSource"
+                      },
+                      "Shape": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "height": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                          },
+                          "diameter": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                          },
+                          "length": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Description of the shape."
+                          }
+                        },
+                        "title": "Shape"
+                      },
+                      "ElectrodePreparation": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "url": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url",
+                            "description": "A url to a pdf or description of the electrode."
+                          },
+                          "description": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "electrochemical cell": {
+                  "$schema": "http://json-schema.org/draft-06/schema#",
+                  "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/system/electrochemical_cell.json#",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrochemical%20cell/definitions/ElectrochemicalCell"
+                    }
+                  ],
+                  "definitions": {
+                    "ElectrochemicalCell": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "title": "ElectrochemicalCell",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "components": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrochemical%20cell/definitions/ElectrochemicalCellComponent"
+                          }
+                        },
+                        "cell description": {
+                          "type": "string"
+                        },
+                        "cleaning procedure": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrochemical%20cell/definitions/ElectrochemicalCellSource"
+                        }
+                      }
+                    },
+                    "ElectrochemicalCellComponent": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "part": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "part"
+                      ],
+                      "title": "ElectrochemicalCellComponent"
+                    },
+                    "ElectrochemicalCellSource": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "url": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url"
+                        }
+                      },
+                      "title": "ElectrochemicalCellSource"
+                    }
+                  }
+                },
+                "atmosphere": {
+                  "$schema": "http://json-schema.org/draft-06/schema#",
+                  "$id": "https://raw.githubusercontent.com/echemdb/metadata-schema/main/schemas/general/atmosphere.json",
+                  "allOf": [
+                    {
+                      "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/atmosphere/definitions/Atmosphere"
+                    }
+                  ],
+                  "definitions": {
+                    "Atmosphere": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "total organic carbon": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/figure%20description/definitions/ScanRate/allOf/0"
+                        },
+                        "components": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Svgdigitizer/properties/system/definitions/System/properties/electrolyte/definitions/Electrolyte/properties/components/items"
+                          }
+                        },
+                        "url": {
+                          "$ref": "#/definitions/Svgdigitizer/properties/source/definitions/Source/properties/url",
+                          "description": "A url with further details on the experimental setup."
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "comment": {
+                          "type": "string"
+                        }
+                      },
+                      "title": "Atmosphere"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "electrodes",
+                "electrolyte",
+                "type"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "curation",
+        "source",
+        "system"
+      ],
+      "title": "Svgdigitizer"
+    }
+  }
+}
