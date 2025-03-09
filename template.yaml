@@ -1,0 +1,182 @@
+curation:
+  process:
+    - role: curator
+      name:
+      orcid:
+      date:
+experimental:
+  tags:
+    -
+  instrumentation:
+    - type: potentiostat
+      manufacturer:
+      model:
+  description:
+source:
+  url:
+  citation key:
+  techniques:
+    - CV
+  figure:
+  curve:
+system:
+  type: electrochemical
+  electrolyte:
+    type: aqueous
+    components:
+      - name: Name # This is a standard component entry. Some entries are related to certain types of components.
+        concentration:
+          value: 1
+          unit: mol / l
+        type:
+        source:
+          supplier:
+          LOT:
+          purity:
+            grade: 5N # analytical grade, 5N, etc
+            total organic carbon:
+              value: 3
+              unit: ppb
+            total ion conductivity:
+              value: 18
+              unit: MOhm cm
+        purity: # puity after refinement
+          refinement: Thorough cleaning. # Description of additional cleaning procedures post purchase
+          grade: 6N
+          total organic carbon:
+            value: 3
+            unit: ppb
+          container: new name # the new container in which the chemical has been transferred for daily use
+          internal LOT: Number # Flask in which some of the chemicals were transferred
+          url: # details on the wiki
+        partial pressure: # if type gas
+          unit: 1
+          value: bar # use 1 bar for saturated solutions
+        proportion: # if type solvent
+          value: 100
+          unit: volume percent
+        flow:
+          value: null
+          unit: null
+        comment: Nothing special. # text description
+      - name: NaCl # can be trivia name, sum formula, etc
+        concentration:
+          value: 0.1
+          unit: mol / l # [mol / l, mmol / l, umol / l, g / kg, ...] Do not use M for molar. Use the string repesentation of units from astropy. https://docs.astropy.org/en/stable/units/index.html
+        type: salt #
+        source:
+          supplier: Supplier name
+          LOT: '654654'
+        purity:
+          grade: 5N
+      - name: water
+        type: solvent
+        proportion:
+          value: 50
+          unit: volume percent
+        source:
+          refinement: Sartorius Arium 611UV
+        purity:
+          grade: ultrapure water # qualitative description of the purity commonly used in the community
+          total organic carbon:
+            value: 3
+            unit: ppb
+      - name: ethanol
+        type: solvent
+        proportion:
+          value: 50
+          unit: volume percent
+        purity:
+          grade: analytical grade # qualitative description of the purity commonly used in the community
+      - name: H2SO4
+        type: acid
+        source:
+          supplier: Supplier name
+          LOT: C45456
+        concentration:
+          value: 0.1
+          unit: mol / l # [mol / l, mmol / l, umol / l, g / kg, ...] Do not use M for molar. Use the string repesentation of units from astropy. https://docs.astropy.org/en/stable/units/index.html
+      - name: N2
+        type: gas
+        purity:
+          grade: N5.0 # some genereic name
+        partial pressure:
+          unit: 1
+          value: bar # use 1 bar for saturated solutions
+        proportion:
+          value: 100
+        flow:
+          value: null
+          unit: null
+    ph:
+      value: 13
+      uncertainty: 0.1
+    temperature: # provide the temperature as it is given in the article. Assume room temperature if nothing is provided
+      value: 298.15
+      unit: K # [K, C, F]
+  electrodes:
+    - name: RHE
+      function: reference electrode
+      redox system: RHE # the reference electrode given in the experimental section. Might differ from that in the plot: MSE-sat, MSE-3M, MSE-1M, RHE, AgCl2
+      source:
+        manufacturer: SI Analytics
+        model: MSE Shott
+        url: http://some.url.to.a.pdf.html
+      description: Home made RHE.
+      material: Pt
+      type: wire
+      shape:
+        description: Description of the shape.
+    - name: CE
+      function: counter electrode
+      material: Pt
+      type: wire
+      shape:
+        length:
+          value: 4
+          unit: mm
+        diameter:
+          value: 4
+          unit: mm
+      crystallographic orientation: poly
+      geometric electrolyte contact area:
+        value:
+        unit: cm-2
+    - name: WE
+      function: working electrode
+      type: single crystal
+      material: Ni
+      crystallographic orientation: '111' # 'hkl', '100', '110', '11,15,1', 'poly'. Force string with ''. Otherwise leading zeros will be removed and the entry will be understood as an octal number.
+      source:
+        manufacturer: Company name
+        LOT: 145823A # LOT number
+        purity:
+          grade: 5N
+      shape: # optional
+        type: cylinder # bead/sphere
+        height:
+          value: 4
+          unit: mm
+        diameter:
+          value: 4
+          unit: mm
+      geometric electrolyte contact area:
+        value: 1
+        unit: cm-2
+      preparation procedure:
+        description: # Short description of the sample preparation.
+          - Description step 1.
+          - Description Step 2.
+          - ...
+        url: https://www.preparation.html # Link to a page with a standard preparation procedure.
+  electrochemical cell:
+    type: glass electrolysis cell
+    components: # list of components in contact with the electrolyte
+      - name: glass
+        part: cell
+      - name: nafion
+        part: membrane
+    cell description: A classical electrochemical cell. # freetext description
+    cleaning procedure: Storing in highly concentrated KOH and boiling in Milli-Q water. # freetext description
+    source:
+      url: https://doi.org/doi # DOI or URL where the design is published
