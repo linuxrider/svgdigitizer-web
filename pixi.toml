@@ -1,4 +1,4 @@
-[project]
+[workspace]
 authors = ["Johannes Hermann <linuxrider@web.de>"]
 channels = ["conda-forge"]
 name = "svgdigitizer-web"
@@ -8,4 +8,4 @@ version = "0.1.0"
 [tasks]
 
 [dependencies]
-nodejs = ">=22.17.0,<22.18"
+nodejs = ">=24.9.0,<24.10"
