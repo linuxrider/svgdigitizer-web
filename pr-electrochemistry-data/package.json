@@ -9,6 +9,6 @@
   "main": "./index.js",
   "license": "MIT",
   "devDependencies": {
-    "wrangler": "^4.24.0"
+    "wrangler": "^4.46.0"
   }
 }
