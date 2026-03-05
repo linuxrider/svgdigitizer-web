@@ -8,4 +8,4 @@ version = "0.1.0"
 [tasks]
 
 [dependencies]
-nodejs = ">=24.9.0,<24.10"
+nodejs = ">=24.7.0,<25"
