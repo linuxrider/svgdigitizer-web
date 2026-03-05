@@ -14,7 +14,7 @@
  * @returns {void}
  */
 import { fileOpen, fileSave } from 'browser-fs-access'
-import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v0.27.3/full/pyodide.mjs'
+import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v0.29.0/full/pyodide.mjs' // TODO: set v0.29.0 as soon as it is released
 import { usePdfStore } from '@/stores/pdf'
 import { usePublishStore } from '@/stores/publish'
 
@@ -40,19 +40,22 @@ export default {
     const pdfStore = usePdfStore()
     let pyodide = await loadPyodide()
     await pyodide.loadPackage('micropip')
-    await pyodide.loadPackage('click')
-    await pyodide.loadPackage('pillow')
-    await pyodide.loadPackage('svgwrite')
-    await pyodide.loadPackage('svgdigitizer-0.12.5-py3-none-any.whl')
-    await pyodide.loadPackage('pymupdf-1.25.3-cp312-abi3-pyodide_2024_0_wasm32.whl')
-
-    await pyodide.runPython(`
-      from importlib import resources
-      import pymupdf
-      from svgdigitizer.entrypoint import _create_svg
-      pdf = ""
-      svg = ""
-    `)
+    const micropip = pyodide.pyimport('micropip')
+    await micropip.install('svgdigitizer')
+    console.log(
+      pyodide.runPython(`
+    import sys
+    sys.version
+  `),
+    )
+    //pyodide.org/en/latest/console.html
+    https: console.log(
+      pyodide.runPython(`
+    str(globals())
+    from svgdigitizer.entrypoint import _create_svg
+    from svgdigitizer.pdf import Pdf
+  `),
+    )
 
     const svgEditor = this
     const { svgCanvas } = svgEditor
@@ -105,11 +108,16 @@ export default {
 
       // generate png + svg files
       await pyodide.runPython(`
-              doc = pymupdf.open(pdf)
-              base = ".".join(pdf.split(".")[:-1])
-              page = doc.load_page(page_num)
-              pix = page.get_pixmap(dpi=600)
-              png = f"{base}_p{page_num}.png"
+              doc = Pdf(pdf)
+              try:
+                doc_doi = doc.doi
+                png = f"{doc.build_identifier()}_p{page_num}.png"
+              except:
+                base = ".".join(pdf.split(".")[:-1])
+                png = f"{base}_p{page_num}.png"
+
+              pix = doc.export_png(page_num, 600)
+
               pix.save(png)
               svg = f"{base}_p{page_num}.svg"
               _create_svg(svg, png, False, False)

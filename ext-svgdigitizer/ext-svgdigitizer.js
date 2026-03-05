@@ -14,7 +14,7 @@
  * @returns {void}
  */
 import { fileOpen, fileSave } from 'browser-fs-access'
-import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v0.27.3/full/pyodide.mjs'
+import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/latest/full/pyodide.mjs'
 import { usePdfStore } from '@/stores/pdf'
 import { usePublishStore } from '@/stores/publish'
 
@@ -39,16 +39,9 @@ export default {
     const publishStore = usePublishStore()
     const pdfStore = usePdfStore()
     let pyodide = await loadPyodide()
-    await pyodide.loadPackage('micropip')
-    await pyodide.loadPackage('click')
-    await pyodide.loadPackage('pillow')
-    await pyodide.loadPackage('svgwrite')
-    await pyodide.loadPackage('/svgdigitizer-0.12.5-py3-none-any.whl')
-    await pyodide.loadPackage('/pymupdf-1.25.3-cp312-abi3-pyodide_2024_0_wasm32.whl')
-
+    const micropip = pyodide.pyimport('micropip')
+    await micropip.install('svgdigitizer')
     await pyodide.runPython(`
-      from importlib import resources
-      import pymupdf
       from svgdigitizer.entrypoint import _create_svg
       pdf = ""
       svg = ""
